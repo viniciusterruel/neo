@@ -1,27 +1,40 @@
 <?php
-	try {
- 		 $conn = new PDO('mysql:host=127.0.0.1;dbname=base', $username = 'terruel', $password = 'terruel');
-    	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	} catch(PDOException $e) {
-    	echo 'ERROR: ' . $e->getMessage();
-	}
-	
+
 	$arquivo = file_get_contents('tickets.json');
-	$json = json_decode($arquivo);
+	$json = json_decode($arquivo, true);
+
+	$array = [];
 
 	foreach($json as $registro){
-		echo 'Ticket: '. $registro->TicketID . ' - Nome: ' . $registro->CustomerName . '<br>';
-	}	
+		//echo "<pre>";
+		//print_r($registro['Interactions'][0]['Message']);
+		foreach($registro['Interactions'] as $interaction){
+			//echo "<pre>";
+			//print_r($msg['Message']);
+			$tokenizer = explode(' ', $interaction['Message']);
+			//echo "<pre>";
+			//print_r($tokenizer);
+			//die;
+
+			foreach($tokenizer as $word){
+				$word = str_replace('.', '', $word);
+			}
+			echo "<pre>";
+			print_r($tokenizer);
+			die;
+			$msg_nova = str_replace('.', '', $tokenizer);
+			$msg_nova .= str_replace(',', '', $tokenizer);
+			$msg_nova .= str_replace('?', '', $tokenizer);
+			$msg_nova .= str_replace('!', '', $tokenizer);
+			$msg_nova .= str_replace(':', '', $tokenizer);
+			$msg_nova .= str_replace('/', '', $tokenizer);
+			
+			$array[$registro['TicketID']][$interaction['DateCreate']] = $msg_nova;			
+		}
+		
+	}
+	echo "<pre>";
+	print_r($array);
 	
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title></title>
-</head>
-<body>
-
-</body>
-</html>
