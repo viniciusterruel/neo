@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html>
 <head> 
@@ -5,6 +6,7 @@
 	<title>Desafio NeoAssist</title>
 </head>
 <body>
+-->
 <?php
 //Criação dos dicionários de categorias para comparação futura com as mensagens-------------------------------------------------------
 	$elogio = array("obrigado", "obrigada", "agradecer", "agradecemos", "gentileza", "gentil", "gentis", "satisfação", "satisfeito", "satisfeita", "ótimo", "bom", "gostar", "gostei", "gostando", "gostamos", "parabéns");
@@ -63,30 +65,66 @@
 		//print_r($valor_msg);
 		
 	}
-	//echo "<pre>";
-	//print_r($valor_msg);
+
+	$i = 0;//inicializa uma variável auxiliar
+	$novo_json = $json;//coloca o json inicial em um outro json
+	$alta = ["Prioridade"=>"Alta"];
+	$normal = ["Prioridade"=>"Normal"];
+
+	//percorre os tickets do json----------------------------------------
+	foreach($novo_json as $pedaco){
+		if($valor_msg[$i] >= 4){
+			array_push($pedaco, $valor_msg[$i]);//adiciona um novo campo ao json em cada ticket
+			array_push($pedaco, $alta['Prioridade']);
+			array_push($novo_json, $pedaco);//adiciona o novo ticket ao json
+		}
+		elseif($valor_msg[$i] < 4){
+			array_push($pedaco, $valor_msg[$i]);//adiciona um novo campo ao json em cada ticket
+			array_push($pedaco, $normal['Prioridade']);
+			array_push($novo_json, $pedaco);//adiciona o novo ticket ao json
+		}
+		$i++;//itera a variável auxilial
+	}
+	//-------------------------------------------------------------------
+	json_encode($novo_json);//guarda o novo json
+
+	$divide_array = sizeof($novo_json)/2;//Divide o tamanho do novo json ao meio
+
+	//Como o novo json tem agora duas partes: uma com todos os tickets sem o novo campo (pontuação), e outro com o novo campo, queremos tirar a primeira parte, e deixar somente os tickets com as pontuações--------------------------------------------------------------
+	for($x=0; $x<=$divide_array-1; $x++){
+		array_shift($novo_json);
+	}
+	//--------------------------------------------------------------------------
+	json_encode($novo_json);//decodifica novamente o json agora totalmente correto
+
+	echo "<pre>";
+	print_r($novo_json);
+
 ?>
 
 
+<!--
  <h1 class="register-title">Desafio NeoAssist</h1>
-  <form class="register">
+  <form class="register" action="apineo.php" method="post">
     <select class="basic simple">
     	<option value="">Ordenar por</option>
-    	<option>Ordem de criação</option>
-    	<option>Ordem de atualização</option>
-    	<option>Prioridade</option>
+    	<option name="criacao">Ordem de criação</option>
+    	<option name="atualizacao">Ordem de atualização</option>
+    	<option name="prioridade">Prioridade</option>
     </select>
     <p><label class="label-data">Data de Criação:</label></p>
-    <input type="date" class="register-input" placeholder="Data De">
+    <input type="date" name="datade" class="register-input" placeholder="Data De">
     <p><label class="label-data">Até:</label></p>
-    <input type="date" class="register-input" placeholder="Data Até">
+    <input type="date" name="dataate" class="register-input" placeholder="Data Até">
  	<p><label class="label-data">Prioridade: </label></p>
  	<p id="p-radio">
 	<input type="radio" name="prioridade" value="Alta" checked="checked">Alta
 	<input type="radio" name="prioridade" value="Normal">Normal
 	</p>
-    <input type="submit" value="Submit" class="register-button">
+    <input type="submit" value="Enviar" class="register-button">
   </form>
+-->
+
 
 
 </body>
