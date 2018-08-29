@@ -1,11 +1,10 @@
-<!--
 <!DOCTYPE html>
 <html>
 <head> 
 	 <link rel="stylesheet" type="text/css" href="style.css">
 	<title>Desafio NeoAssist</title>
 </head>
-<body>-->
+<body>
 
 <?php
 //Criação dos dicionários de categorias para comparação futura com as mensagens-------------------------------------------------------
@@ -99,6 +98,7 @@
 		print_r($ped['1']);
 	}
 	*/
+	/*
 	$ch = curl_init('apineo.php');
 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $novo_json);
@@ -107,12 +107,15 @@
     'Content-Type: application/json',
     'Content-Length: ' . strlen($novo_json))
 	);
+	*/
+	session_start("envia_json");
 
+	$_SESSION['dados'] = $novo_json;
 	
 ?>
 
 
-<!--
+
  <h1 class="register-title">Desafio NeoAssist</h1>
   <form class="register" action="apineo.php" method="post">
     <select class="basic simple" name="ordenar">
@@ -132,9 +135,5 @@
 	</p>
     <input type="submit" value="Enviar" class="register-button">
 </form>
-
-
-
-
 </body>
-</html>-->
+</html>
