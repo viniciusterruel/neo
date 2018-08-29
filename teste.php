@@ -1,11 +1,11 @@
-
+<!--
 <!DOCTYPE html>
 <html>
 <head> 
 	 <link rel="stylesheet" type="text/css" href="style.css">
 	<title>Desafio NeoAssist</title>
 </head>
-<body>
+<body>-->
 
 <?php
 //Criação dos dicionários de categorias para comparação futura com as mensagens-------------------------------------------------------
@@ -34,7 +34,7 @@
 			$nocarac = str_replace('/', '', $nocarac);
 		//--------------------------------------------------------
 		
-			$alllower = mb_strtolower($nocarac);//Deixa a string totalmente minúscula e com os acentos 	
+			$alllower = strtolower($nocarac);//Deixa a string totalmente minúscula e com os acentos 	
 			$tokenizer = explode(' ', $alllower);//Separa a mensagem em palavras e coloca no vetor tokenizer
 			$mensagens[$ticket['TicketID']] = $tokenizer; //Guarda o vetor tokenizer no vetor de vetores $mensagens
 			
@@ -93,12 +93,26 @@
 	//--------------------------------------------------------------------------
 	json_encode($novo_json);//decodifica novamente o json agora totalmente correto
 	//echo "<pre>";
-	//print_r($novo_json);
+	/*
+	foreach($novo_json as $ped){
+		echo "<pre>";
+		print_r($ped['1']);
+	}
+	*/
+	$ch = curl_init('apineo.php');
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $novo_json);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($novo_json))
+	);
+
 	
 ?>
 
 
-
+<!--
  <h1 class="register-title">Desafio NeoAssist</h1>
   <form class="register" action="apineo.php" method="post">
     <select class="basic simple" name="ordenar">
@@ -123,4 +137,4 @@
 
 
 </body>
-</html>
+</html>-->
